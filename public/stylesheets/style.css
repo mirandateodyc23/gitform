@@ -1,0 +1,88 @@
+
+body {
+  padding: 40px 10px;
+  background-color: #eee;
+}
+
+header {
+  max-width: 330px;
+  padding: 15px;
+  margin: 0 auto;
+}
+
+footer {
+  max-width: 330px;
+  padding: 15px;
+  margin: 0 auto;
+}
+
+.listing-reg h1 {
+  text-align: center;
+  margin: 0 0 2rem;
+}
+
+/* css for registration form and errors*/
+.git-form {
+  max-width: 330px;
+  padding: 15px;
+  margin: 0 auto;
+}
+.git-form {
+  display: flex;
+  flex-wrap: wrap;
+}
+.git-form input {
+  width: 100%;
+  margin: 0px 0 10px;
+}
+.git-form .btn {
+  flex: 1 0 100%;
+}
+
+.my-message {
+  margin: 0 auto;
+  padding: 0 0 10px 0;
+  list-style: none;
+  color: #333;
+  /* font-size: 1.2rem; */
+  display: table;
+}
+.my-message span {
+  margin: 0 0 1rem;
+}
+
+.my-errors {
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+  color: #333;
+  /* font-size: 1.2rem; */
+  display: table;
+}
+.my-errors li {
+  margin: 0 0 1rem;
+}
+.my-errors li:before {
+  content: "! Error : ";
+  color: #f00;
+  font-weight: bold;
+}
+
+
+/* Styles for listing table */
+.listing-table {
+  width: 100%;
+}
+.listing-table th,
+.listing-table td {
+  padding: 10px;
+  border-bottom: 1px solid #666;
+}
+.listing-table th {
+  background: #000;
+  color: #fff;
+}
+.listing-table td:first-child,
+.listing-table th:first-child {
+  border-right: 1px solid #666;
+}

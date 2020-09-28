@@ -1,0 +1,179 @@
+extends layout
+
+
+block content
+  -data = data || {}
+  -datajson = JSON.stringify(data)
+  -projects = ['HRIS','Intranet','TSS','FOS','DRS','Admin Portal','PSPBPO']
+  -requestors = ['ted','jerome','alec']
+  -result = result || {}
+  if status == 1
+    -data = {}
+
+  
+  if message && status == 1
+    div(class="row")
+      div(class="col-sm")
+        div(class="alert alert-success alert-dismissible")
+          a(href="#", class="close", data-dismiss="alert", aria-label="close") &times
+          strong Success! 
+          span.text-success=message
+  else if message && status == 0
+    div(class="row")
+      div(class="col-sm")
+        div(class="alert alert-danger alert-dismissible")
+          a(href="#", class="close", data-dismiss="alert", aria-label="close") &times
+          strong(class="label label-default") Error! 
+          span(class="label label-default text-danger")=message
+            if errors
+                -errorjson = JSON.stringify(errors)
+                ul
+                  for error in errors
+                    li.text-danger=error.msg
+
+  if result['notification'] && result['gitformat']
+    div(class="row")
+      div(class="col-sm")
+        h3 Skype Notification
+        if(result['notification']['develop'])
+          div(class="alert alert-info")!=result['notification']['develop']
+        if(result['notification']['develop-2'])
+          div(class="alert alert-info")!=result['notification']['develop-2']
+        if(result['notification']['master'])
+          div(class="alert alert-info")!=result['notification']['master']
+        if(result['notification']['master-2'])
+          div(class="alert alert-info")!=result['notification']['master-2']
+        if(result['notification']['go-live']) 
+          div(class="alert alert-info")!=result['notification']['go-live']
+        if(result['notification']['go-live-2'])
+          div(class="alert alert-info")!=result['notification']['go-live-2']
+      div(class="col-sm")
+        h3 Git Format
+        if(result['gitformat']['develop-commit-msg'])
+          div(class="alert alert-success")!=result['gitformat']['develop-commit-msg']
+        if(result['gitformat']['develop-commit-msg-2'])  
+          div(class="alert alert-success")!=result['gitformat']['develop-commit-msg-2']
+        if(result['gitformat']['master-commit-msg'])
+          div(class="alert alert-success")!=result['gitformat']['master-commit-msg']
+        if(result['gitformat']['master-commit-msg-2'])
+          div(class="alert alert-success")!=result['gitformat']['master-commit-msg-2']
+        if(result['gitformat']['master-release-tag'])  
+          div(class="alert alert-success")!=result['gitformat']['master-release-tag']
+        if(result['gitformat']['master-release-tag-2'])
+          div(class="alert alert-success")!=result['gitformat']['master-release-tag-2']
+ 
+  div(class="row")
+    div(class="col-sm")
+      div(class="gitsection")
+        h3=title
+        form(class="gitform form-horizontal" action="process", method="post")
+          div(class="gitform-section row")
+            div(class="gitform-col col-sm")
+              div(class="card bg-light mb-3")
+                div(class="card-header text-dark") 
+                  h4 Form #1
+                div(class="card-body col-sm text-dark")
+                    div(class="form-group")
+                      label(class="control-label col-sm", for="tic-no-0") Ticket #:
+                      div(class="col-sm")
+                        input(type="text" name="tic-no-0" class="form-control" id="tic-no-0" value=data['tic-no-0'])
+                    div(class="form-group")
+                      label(class="control-label col-sm", for="tic-title-0") Title:
+                      div(class="col-sm")
+                        input(type="text" name="tic-title-0" class="form-control" id="tic-title-0" value=data['tic-title-0'])
+                    div(class="form-group")
+                      label(class="control-label col-sm", for="cp-no-0") CP #:
+                      div(class="col-sm")
+                        input(type="text", name="cp-no-0" class="form-control" id="cp-no-0" value=data['cp-no-0'])
+                    div(class="form-group")
+                      label(class="control-label col-sm", for="proj-type-0") Project Type:
+                      div(class="col-sm")
+                        select(name="proj-type-0" id="proj-type-0" class="form-control" value=data['proj-type-0']) 
+                          each project in projects
+                            if (project == data['proj-type-0'])
+                              option(value=project, selected="selected") #{project}
+                            else
+                              option(value=project) #{project}
+                    div(class="form-group")
+                      label(class="control-label col-sm", for="requestor-0") Project Type:
+                      div(class="col-sm")
+                        select(name="requestor-0" id="requestor-0" class="form-control" value=data['requestor-0']) 
+                          each requestor in requestors
+                            if (requestor == data['requestor-0'])
+                              option(value=requestor, selected="selected") #{requestor}
+                            else
+                              option(value=requestor) #{requestor}
+
+          div(class="form-group")
+            div(class="col-sm-offset-2 col-sm")
+              button(class="btn btn-primary", type="submit") Submit
+              a(class="add-form btn btn-info") Add Form
+
+      div(class="modal fade" id="myModal" role="dialog")
+        div(class="modal-dialog")
+          div(class="modal-content")
+            div(class="modal-header")
+              h4(class="heading text-danger") Confirmation
+              button(type="button" class="close" data-dismiss="modal")
+                span(aria-hidden="true" class="white-text") &times;
+            div(class="modal-body justify-content-center")
+              div(class="row")
+                div(class="col-sm add-more")
+                  p The number of form exceeds to the standar number of forms to be displayed. Do you want to add more?
+                div(class="col-sm no-add-more", style="display: none")
+                  p Sorry, We cannot add more than 5 forms. Thank you
+            div(class="modal-footer justify-content-center")
+              button(class="btn btn-outline-info waves-effect btn-cont-add" data-dismiss="modal") Continue
+              button(class="btn btn-outline-danger waves-effect btn-close" data-dismiss="modal") Cancel
+                
+                
+            
+  script(type="text/javascript").
+    $(document).ready(function(){
+      var formctr = $('form.gitform .gitform').length 
+      var datajson = !{datajson}
+      var errorjson = !{errorjson}
+      console.log(errorjson)
+      var formmax = 4
+      var cont_form = 0
+
+      $('.add-form').on('click', function(){
+        if((formctr < 2 || cont_form == 1) && formctr < formmax) {
+          formctr++
+          var gitform =  $('form.gitform .gitform-col').first().clone()
+          gitform.find('.card .card-header h4').text("Form #" + (formctr + 1))
+
+          gitform.find('input, select').each(function(){
+            $(this).val('')
+            this.name= this.name.replace('-0', '-' + formctr)
+          })
+
+          $('.gitform-section').append(gitform)
+
+        } else {
+          $("#myModal").modal('toggle')
+
+          if(formctr < formmax ){
+            $(".btn.btn-cont-add").on('click', function(){
+              cont_form = 1
+            })
+          } else {
+             $("#myModal .add-more").css('display','none')
+             $("#myModal .no-add-more").css('display','block')
+             $("#myModal .btn-cont-add").css('display','none')
+
+            $(".btn.btn-close").on('click', function(){
+              $("#myModal .add-more").css('display','block')
+              $("#myModal .no-add-more").css('display','none')
+              $("#myModal .btn-cont-add").css('display','block')
+            })
+          }
+
+        }
+        
+      })
+    })
+
+
+block sidebar
+
