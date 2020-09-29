@@ -88,11 +88,11 @@ function(req, res, next) {
               requestor =  element.value;
             }
           });
-          resultdata.notification['develop'] = "Hi All," + "<br/>" + "I will merge #" + ticket + "(#" + cp + ") to origin/develop (" + project + ").<br/> Thank you";
-          resultdata.notification['master'] = "Hi All," + "<br/>" + "I will merge #" + ticket + "(#" + cp + ") to origin/master (" + project + ").<br/> Thank you";
-          resultdata.notification['go-live'] = "(bell) " + project  + " (bell) Live Notification:  " + "<br/>" + "v" + date_format + "_#" + ticket + "#" + cp + ": " + title + " // requested by " + requestor;
+          resultdata.notification['develop'] = "Hi All," + "<br/>" + "I will merge #" + ticket + "(" + cp + ") to origin/develop (" + project + ").<br/> Thank you";
+          resultdata.notification['master'] = "Hi All," + "<br/>" + "I will merge #" + ticket + "(" + cp + ") to origin/master (" + project + ").<br/> Thank you";
+          resultdata.notification['go-live'] = "(bell) " + project  + " (bell) Live Notification:  " + "<br/>" + "#" + ticket + "#" + cp + ": " + title + " // requested by " + requestor;
           
-          resultdata.gitformat['develop-commit-msg'] = "#" + ticket + "(#" + cp + ") " + title;
+          resultdata.gitformat['develop-commit-msg'] = "#" + ticket + "(" + cp + ") " + title;
           resultdata.gitformat['master-commit-msg'] = ticket + " " + cp + " " + title;
           resultdata.gitformat['master-release-tag'] = "v" + date_format +"_#" + ticket + "#" + cp ;
       
@@ -126,26 +126,26 @@ function(req, res, next) {
             }
           });
 
-          resultdata.notification['develop'] = "Hi All," + "<br/>" + "I will merge #" + ticket + "(#" + cp + ") to origin/develop (" + project + ").<br/> Thank you";
+          resultdata.notification['develop'] = "Hi All," + "<br/>" + "I will merge #" + ticket + "(" + cp + ") to origin/develop (" + project + ").<br/> Thank you";
           
-          resultdata.notification['develop-2'] = "Hi All," + "<br/>" + "I will merge #" + ticket2 + "(#" + cp2 + ") to origin/develop (" + project2 + ").<br/> Thank you";
+          resultdata.notification['develop-2'] = "Hi All," + "<br/>" + "I will merge #" + ticket2 + "(" + cp2 + ") to origin/develop (" + project2 + ").<br/> Thank you";
 
           if(project == project2){
             resultdata.notification['master'] = "Hi All," + "<br/>" + "I will merge #" + ticket + "#" + ticket2 + " to origin/master (" + project + ").<br/> Thank you";
             resultdata.notification['go-live'] = "(bell) " + project  + " (bell) Live Notification:  " + "<br/>" + "#" + ticket + "(#" + cp + ") " + title + " // requested by " + requestor +
                                                                                                          "<br/>" + "#" + ticket2 + "(#" + cp2 + ") " + title2 + " // requested by " + requestor2;
-            resultdata.gitformat['develop-commit-msg'] = "#" + ticket + "(#" + cp + ") " + title + 
-                                                    "<br/>#" + ticket2 + "(#" + cp2 + ") " + title2;
+            resultdata.gitformat['develop-commit-msg'] = "#" + ticket + "(" + cp + ") " + title + 
+                                                    "<br/>#" + ticket2 + "(" + cp2 + ") " + title2;
             resultdata.gitformat['master-commit-msg'] = ticket + "(" + cp + ") " + title + 
                                                     "<br/>" + ticket2 + "(" + cp2 + ") " + title2;
             resultdata.gitformat['master-release-tag'] = "v" + date_format +"_#" + ticket + "#" + ticket2 + "#" + cp + " " + title;
           } else {
-            resultdata.notification['master'] = "Hi All," + "<br/>" + "I will merge #" + ticket + "(#" + cp + ") to origin/master (" + project + ").<br/> Thank you";
-            resultdata.notification['master-2'] = "Hi All," + "<br/>" + "I will merge #" + ticket2 + "(#" + cp2 + ") to origin/master (" + project2 + ").<br/> Thank you";          
+            resultdata.notification['master'] = "Hi All," + "<br/>" + "I will merge #" + ticket + "(" + cp + ") to origin/master (" + project + ").<br/> Thank you";
+            resultdata.notification['master-2'] = "Hi All," + "<br/>" + "I will merge #" + ticket2 + "(" + cp2 + ") to origin/master (" + project2 + ").<br/> Thank you";          
             resultdata.notification['go-live'] = "(bell) " + project  + " (bell) Live Notification:  " + "<br/>" + "#" + ticket + "(#" + cp + ") " + title + " // requested by " + requestor +
                                                  "<br/>(bell) " + project2  + " (bell) Live Notification:  " + "<br/>" + "#" + ticket2 + "(#" + cp2 + ") " + title2 + " // requested by " + requestor2;
-            resultdata.gitformat['develop-commit-msg'] = "#" + ticket + "(#" + cp + ") " + title;
-            resultdata.gitformat['develop-commit-msg-2'] = "#" + ticket2 + "(#" + cp2 + ") " + title2;
+            resultdata.gitformat['develop-commit-msg'] = "#" + ticket + "(" + cp + ") " + title;
+            resultdata.gitformat['develop-commit-msg-2'] = "#" + ticket2 + "(" + cp2 + ") " + title2;
 
             resultdata.gitformat['master-commit-msg'] = ticket + " " + cp + " " + title;
             resultdata.gitformat['master-commit-msg-2'] = ticket2 + " " + cp2 + " " + title2;
