@@ -136,9 +136,9 @@ function(req, res, next) {
                                                                                                          "<br/>" + "#" + ticket2 + "(#" + cp2 + ") " + title2 + " // requested by " + requestor2;
             resultdata.gitformat['develop-commit-msg'] = "#" + ticket + "(" + cp + ") " + title + 
                                                     "<br/>#" + ticket2 + "(" + cp2 + ") " + title2;
-            resultdata.gitformat['master-commit-msg'] = ticket + "(" + cp + ") " + title + 
-                                                    "<br/>" + ticket2 + "(" + cp2 + ") " + title2;
-            resultdata.gitformat['master-release-tag'] = "v" + date_format +"_#" + ticket + "#" + ticket2 + "#" + cp + " " + title;
+            resultdata.gitformat['master-commit-msg'] = ticket + " " + cp + " " + title + 
+                                                    "<br/>" + ticket2 + " " + cp2 + " " + title2;
+            resultdata.gitformat['master-release-tag'] = "v" + date_format +"_#" + ticket + "#" + ticket2 + "#" + cp;
           } else {
             resultdata.notification['master'] = "Hi All," + "<br/>" + "I will merge #" + ticket + "(" + cp + ") to origin/master (" + project + ").<br/> Thank you";
             resultdata.notification['master-2'] = "Hi All," + "<br/>" + "I will merge #" + ticket2 + "(" + cp2 + ") to origin/master (" + project2 + ").<br/> Thank you";          
