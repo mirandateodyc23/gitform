@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var attRouter = require('./routes/emp_att');
 
 
 var app = express();
@@ -29,13 +30,13 @@ app.use(bodyParser.json())
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/emp_att', attRouter);
+
 
 // Use Bootstrap
 app.use('/bootstrap-dist-css', express.static(__dirname + '/node_modules/bootstrap/dist/css'));
 app.use('/bootstrap-dist-js', express.static(__dirname + '/node_modules/bootstrap/dist/js'));
 app.use('/js', express.static(__dirname + '/public/javascripts'));
-
-
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -52,5 +53,6 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
 
 module.exports = app;

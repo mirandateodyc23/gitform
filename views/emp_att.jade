@@ -1,0 +1,120 @@
+extends layout
+
+
+block content
+  -data = data || {}
+  -datajson = JSON.stringify(data)
+  -result = result || {}
+        
+  div(class="row")
+    div(class="col-sm")
+      div(class="attsection")
+        h3=title
+        form(class="attform form-horizontal" action="", method="post")
+          div(class="attform-section row")
+            div(class="attform-col col-sm")
+              div(class="card bg-light mb-3")
+                div(class="card-header text-dark") 
+                  h4 Employee Details
+                div(class="card-body col-sm text-dark")
+                    div(class="form-group")
+                      label(class="control-label col-sm", for="emp-id") EMP ID:
+                      div(class="col-sm")
+                        input(type="text" name="emp_id_new" class="form-control" id="emp-id-new" value=data['emp-id'])
+                        select(type="text" name="emp_id" class="form-control" id="emp-id" value=data['emp-id'])
+                    div(class="form-group")
+                      label(class="control-label col-sm", for="emp-name") NAME:
+                      div(class="col-sm")
+                        input(type="text" name="emp_name" class="form-control" id="emp-name" value=data['emp-name'])
+                    div(class="form-group")
+                      label(class="control-label col-sm", for="emp-shift") TIME #:
+                      div(class="col-sm")
+                        input(type="text", name="emp_shift" class="form-control" id="emp-shift" value=data['emp-shift'])
+                    div(class="form-group")
+                      label(class="control-label col-sm", for="emp-loc") REMOTE location:
+                      div(class="col-sm")
+                        input(type="text", name="emp_loc" class="form-control" id="emp-loc" value=data['emp-loc'])
+                     
+                div(class="form-group")
+                  div(class="col-sm-offset-2 col-sm")
+                    div(class="row")
+                      button(class="btn btn-primary add" style="margin: 0px 5px 0px 5px") Save
+                      button(class="btn btn-success new" style="margin: 0px 5px 0px 5px") New
+                      button(class="btn btn-info login_out" style="margin: 0px 5px 0px 5px") Login/Logout
+
+      div(class="modal fade" id="myModal" role="dialog")
+        div(class="modal-dialog")
+          div(class="modal-content")
+            div(class="modal-header")
+              h4(class="heading text-danger") Confirmation
+              button(type="button" class="close" data-dismiss="modal")
+                span(aria-hidden="true" class="white-text") &times;
+            div(class="modal-body justify-content-center")
+              div(class="row")
+                div(class="col-sm")
+                  p Do you want to save?
+            div(class="modal-footer justify-content-center")
+              button(class="btn btn-outline-info waves-effect btn-save" data-dismiss="modal") Save
+              button(class="btn btn-outline-danger waves-effect btn-close" data-dismiss="modal") Cancel
+    div(class="col-sm")        
+                
+            
+  script(type="text/javascript").
+   var empdata = !{datajson};
+
+    $(document).ready(function(){
+      $('#emp-id-new').hide();
+      var options = '';
+      $.each(empdata.employee,function(i,emp){
+       options+= "<option value='" + emp.emp_id + "'>" + emp.emp_id + "</option>";
+      });
+      $('#emp-id').append(options);
+
+      $("form").submit(function(e){
+        e.preventDefault();
+      });
+      $('.btn-primary').on('click', function(){
+        $("#myModal").modal('toggle');
+      })
+      $('.btn-save').on('click', function(){
+        var formData = $('.attform').serializeArray();
+        var object = formData;
+        var json = JSON.stringify(object);
+
+        $.ajax({
+          method: "POST",
+          url: "/emp_att/save_emp",
+          data: formData,
+          dataType: 'json'
+        })
+        .done(function(data){
+            console.log(data.result);
+        });
+        
+      });
+
+      $('#emp-id').on('click', function(){
+        var selected = $(this).val();
+        $.each(empdata.employee,function(i,emp){
+          if( selected == emp.emp_id){
+            $('#emp-id').val(emp.emp_id);
+            $('#emp-name').val(emp.emp_name);
+            $('#emp-shift').val(emp.emp_shift);
+            $('#emp-loc').val(emp.emp_loc);
+          }
+        });
+      });
+
+      $('.btn.btn-success.new').on('click', function(){
+         $('#emp-id').hide();
+          $("form").find('input').each(function(){
+            $(this).val('');
+          });
+          $('#emp-id-new').show();
+      });
+      
+    });
+
+
+block sidebar
+
