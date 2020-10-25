@@ -26,7 +26,6 @@ router.get('/', function(req, res) {
   
   jsonReader('./data.json', (err, employees) => {
     if (err) {
-        console.log(err)
         return
     }
     // empdata = emp;
@@ -35,7 +34,6 @@ router.get('/', function(req, res) {
       delete emp.emp_id_new;
       empdata.push(emp);
     }
-    console.log(empdata);
     
     res.render('emp_att', {
       title: 'Employee Form',
@@ -77,7 +75,6 @@ router.post('/', function(req, res) {
   }
   jsonReader('./data.json', (err, employees) => {
     if (err) {
-        console.log(err)
         return
     }
     // empdata = emp;
@@ -86,7 +83,6 @@ router.post('/', function(req, res) {
       delete emp.emp_id_new;
       empdata.push(emp);
     }
-    console.log(empdata);
     
     res.render('emp_att', {
       title: 'Employee Form',
@@ -117,10 +113,8 @@ router.post('/save_emp', function(req, res) {
   
     jsonReader(filePath, (err, employees) => {
       if (err) {
-          console.log(err)
           return
       }
-      console.log(postdata);
       var exist = false;
       for (var i in employees.employee) {
         var emp = employees.employee[i];
@@ -156,7 +150,6 @@ router.get('/:ID', function(req, res) {
 
     jsonReader('./data.json', (err, employees) => {
       if (err) {
-          console.log(err)
           return
       }
       // empdata = emp;
@@ -165,7 +158,6 @@ router.get('/:ID', function(req, res) {
         if (postdata['ID'] == employees.employee[i].emp_id) {
           empselected.push(emp);
         }
-        console.log(emp);
         delete emp.emp_id_new;
         empdata.push(emp);
       }

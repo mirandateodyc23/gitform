@@ -155,7 +155,6 @@ function(req, res, next) {
           }
 
       }
-      console.log(resultdata);
 
       res.render('index', {
         title: 'Gitflow Form',
