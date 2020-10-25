@@ -19,7 +19,7 @@ function jsonReader(filePath, cb) {
 }
 
 
-/* GET home page. */
+/* GET HOME page. */
 router.get('/', function(req, res) {
   var empdata = [];
   var result_msg = "";
@@ -48,7 +48,7 @@ router.get('/', function(req, res) {
 
 });
 
-  /* POST home page. */
+/* POST HOME page. */
 router.post('/', function(req, res) {
   var empdata = [];
   var result_msg = "";
@@ -145,25 +145,61 @@ router.post('/save_emp', function(req, res) {
   }
 });
 
-router.post('/get_att', function(req, res){
-  var att_msg = [];
-  var postdata = JSON.parse(JSON.stringify(req.body));
-  var date_obj = new Date();
-  var month = date_obj.getMonth()+ 1;
-  var day = date_obj.getUTCDate();
-  var year = date_obj.getUTCFullYear();
-  var months = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
+/* GET ATT page. */
+router.get('/:ID', function(req, res) {
+    var empdata = [];
+    var empselected = [];
+    var result_msg = "";
+    var postdata = JSON.parse(JSON.stringify(req.params));
+    var status = 0;
+    var message = "";
 
-  att_msg.push(months[month] + " " + day + ", " + year);
-  att_msg.push('EMP ID: ' + postdata.emp_id);
-  att_msg.push('Name: ' + postdata.emp_name);
-  att_msg.push('Time: ' + postdata.emp_shift);
-  att_msg.push('Remote location: ' + postdata.emp_loc);
+    jsonReader('./data.json', (err, employees) => {
+      if (err) {
+          console.log(err)
+          return
+      }
+      // empdata = emp;
+      for (var i in employees.employee) {
+        var emp = employees.employee[i];
+        if (postdata['ID'] == employees.employee[i].emp_id) {
+          empselected.push(emp);
+        }
+        console.log(emp);
+        delete emp.emp_id_new;
+        empdata.push(emp);
+      }
 
-  console.log(att_msg);
-  console.log(att_msg.join('<br/>'));
-  res.render('emp_att', {result: att_msg.join('<br/>')});
-});
+      if (empselected.length > 0) {
+        status = 1
+        message = "Attendance format has successfuly generated."
+        var att_msg = [];
+        var date_obj = new Date();
+        var month = date_obj.getMonth()+ 1;
+        var day = date_obj.getUTCDate();
+        var year = date_obj.getUTCFullYear();
+        var months = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
+
+        att_msg.push(months[month-1] + " " + day + ", " + year);
+        att_msg.push('EMP ID: ' + empselected[0].emp_id);
+        att_msg.push('Name: ' + empselected[0].emp_name);
+        att_msg.push('Time: ' + empselected[0].emp_shift);
+        att_msg.push('Remote location: ' + empselected[0].emp_loc);
+        result_msg = att_msg.join('<br/>');
+      }
+      
+      res.render('emp_att', {
+        title: 'Employee Form',
+        title2: 'Attendance Format',
+        data: empdata,
+        result: result_msg,
+        status : status,
+        message: message,
+      });
+        
+    });
+        
+  });
 
 
 function digit2_format(number) {
