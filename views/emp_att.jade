@@ -133,7 +133,7 @@ block content
         
       });
 
-      $('#emp-id').on('click', function(){
+      $('#emp-id').on('change', function(){
         var selected = $(this).val();
         $.each(empdata,function(i,emp){
           if( selected == emp.emp_id){
