@@ -1,0 +1,184 @@
+extends layout
+
+block header
+    nav(class="navbar navbar-expand-lg navbar-dark bg-dark")
+      ul(class="navbar-nav mr-auto")
+        li(class="nav-item")
+          a(class="nav-link" href="/") GIT FORM
+            span(class="sr-only") (current)
+        li(class="nav-item active")
+          a(class="nav-link", href="/emp_att") SKYPE ATTENDANCE
+    br
+
+block content
+  -data = data || {}
+  -result = result || ""
+  -datajson = JSON.stringify(data)
+
+  if result !== "" && status == 1
+    div(class="row")
+      div(class="col-sm")
+        div(class="alert alert-success alert-dismissible")
+          a(href="#", class="close", data-dismiss="alert", aria-label="close") &times
+          strong Success! 
+          span.text-success=message
+    div(class="row")
+      div(class="col-sm")
+        h3=title2
+        div(class="alert alert-info")!=result 
+  else if message && status == 0
+    div(class="row")
+      div(class="col-sm")
+        div(class="alert alert-danger alert-dismissible")
+          a(href="#", class="close", data-dismiss="alert", aria-label="close") &times
+          strong(class="label label-default") Error! 
+          span(class="label label-default text-danger")=message
+
+  div(class="row")
+    div(class="col-sm")
+      div(class="attsection")
+        h3=title
+        form(class="attform form-horizontal" action="emp_att", method="post")
+          div(class="attform-section row")
+            div(class="attform-col col-sm")
+              div(class="card bg-light mb-3")
+                div(class="card-header text-dark") 
+                  h4 Employee Details
+                div(class="card-body col-sm text-dark")
+                    div(class="form-group")
+                      label(class="control-label col-sm", for="emp-id") EMP ID:
+                      div(class="col-sm")
+                        input(type="text", name="emp_id_new", class="form-control", id="emp-id-new", value=data['emp-id'])
+                        select(type="text" name="emp_id", class="form-control", id="emp-id", value=data['emp-id'])
+                    div(class="form-group")
+                      label(class="control-label col-sm", for="emp-name") NAME:
+                      div(class="col-sm")
+                        input(type="text" name="emp_name", class="form-control", id="emp-name", value=data['emp-name'])
+                    div(class="form-group")
+                      label(class="control-label col-sm", for="emp-shift") TIME #:
+                      div(class="col-sm")
+                        input(type="text", name="emp_shift", class="form-control", id="emp-shift", value=data['emp-shift'])
+                    div(class="form-group")
+                      label(class="control-label col-sm", for="emp-loc") REMOTE location:
+                      div(class="col-sm")
+                        input(type="text", name="emp_loc", class="form-control", id="emp-loc", value=data['emp-loc'])
+                     
+                div(class="form-group")
+                  div(class="col-sm-offset-2 col-sm")
+                    div(class="row")
+                      button(type="submit", class="btn btn-success no-sub new ", style="margin: 0px 5px 0px 5px") New
+                      button(type="submit", class="btn btn-primary no-sub save", style="margin: 0px 5px 0px 5px") Update
+                      button(type="submit", class="btn btn-danger no-sub cancel", style="margin: 0px 5px 0px 5px") Cancel
+                      button(type="submit", class="btn btn-info login_out", style="margin: 0px 5px 0px 5px") Login/Logout
+
+      div(class="modal fade" id="myModal" role="dialog")
+        div(class="modal-dialog")
+          div(class="modal-content")
+            div(class="modal-header")
+              h4(class="heading text-danger") Confirmation
+              button(type="button", class="close", data-dismiss="modal")
+                span(aria-hidden="true", class="white-text") &times;
+            div(class="modal-body justify-content-center")
+              div(class="row")
+                div(class="col-sm")
+                  p Do you want to save?
+            div(class="modal-footer justify-content-center")
+              button(class="btn btn-outline-info waves-effect btn-save", data-dismiss="modal") Save
+              button(class="btn btn-outline-danger waves-effect btn-close", data-dismiss="modal") Cancel
+
+   
+  script(type="text/javascript").
+   var empdata = !{datajson};
+
+    $(document).ready(function(){
+      $('#emp-id-new').hide();
+      $('.btn.save').hide();
+      $('.btn.cancel').hide();
+      $('.btn.login_out').show();
+      var options = "<option value=''>Plese Select</option>";
+      $.each(empdata,function(i,emp){
+       options+= "<option value='" + emp.emp_id + "'>" + emp.emp_id + "</option>";
+      });
+      $('#emp-id').append(options);
+
+      $('.no-sub').on('click',function(){
+        $("form").submit(function(e){
+          e.preventDefault();
+        }); 
+      });
+
+      $('.btn.save').on('click', function(){
+        $("#myModal").modal('toggle');
+      })
+      $('.btn-save').on('click', function(){
+        var formData = $('.attform').serializeArray();
+        var object = formData;
+        var json = JSON.stringify(object);
+
+        $.ajax({
+          method: "POST",
+          url: "/emp_att/save_emp",
+          data: formData,
+          dataType: 'json'
+        })
+        .done(function(data){
+          if(!data.result){
+            alert("Please fill-out the form correctly.");
+          } else {
+            location.reload();
+          }
+
+
+        });
+        
+      });
+
+      $('#emp-id').on('click', function(){
+        var selected = $(this).val();
+        $.each(empdata,function(i,emp){
+          if( selected == emp.emp_id){
+            $('#emp-id').val(emp.emp_id);
+            $('#emp-name').val(emp.emp_name);
+            $('#emp-shift').val(emp.emp_shift);
+            $('#emp-loc').val(emp.emp_loc);
+          }
+        });
+        if(selected == '') {
+          $('.attform').trigger("reset");
+           $('.btn.save').hide();
+        } else {
+          $('.btn.save').show();
+        }
+      });
+
+      $('.btn.new').on('click', function(){
+          $('#emp-id').hide();
+          $('.btn.new').hide();
+          $('.btn.save').show().text("Create");
+          $('.btn.cancel').show();
+          $('.btn.login_out').hide();
+          $("form").find('input').each(function(){
+            $(this).val('');
+          });
+          $('#emp-id-new').show();
+      });
+
+      $('.btn.cancel').on('click', function(){
+        $('#emp-id').show();
+        $('#emp-id-new').hide();
+        $('.btn.new').show();
+        $('.btn.save').hide().text("Update");
+        $('.btn.cancel').hide();
+        $('.btn.login_out').show();
+      });
+      
+      $('.btn.login_out').on('click', function(){
+        $("form").submit();
+        
+      });
+
+    });
+
+
+block sidebar
+
