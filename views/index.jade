@@ -1,6 +1,15 @@
 extends layout
 
-
+block header
+    nav(class="navbar navbar-expand-lg navbar-dark bg-dark")
+      ul(class="navbar-nav mr-auto")
+        li(class="nav-item active")
+          a(class="nav-link" href="/") GIT FORM
+            span(class="sr-only") (current)
+        li(class="nav-item")
+          a(class="nav-link", href="/emp_att") SKYPE ATTENDANCE
+    br
+          
 block content
   -data = data || {}
   -datajson = JSON.stringify(data)
@@ -66,7 +75,7 @@ block content
     div(class="col-sm")
       div(class="gitsection")
         h3=title
-        form(class="gitform form-horizontal" action="process", method="post")
+        form(class="gitform form-horizontal", action="process", method="post")
           div(class="gitform-section row")
             div(class="gitform-col col-sm")
               div(class="card bg-light mb-3")
@@ -76,19 +85,19 @@ block content
                     div(class="form-group")
                       label(class="control-label col-sm", for="tic-no-0") Ticket #:
                       div(class="col-sm")
-                        input(type="text" name="tic-no-0" class="form-control" id="tic-no-0" value=data['tic-no-0'])
+                        input(type="text" name="tic-no-0", class="form-control", id="tic-no-0", value=data['tic-no-0'])
                     div(class="form-group")
                       label(class="control-label col-sm", for="tic-title-0") Title:
                       div(class="col-sm")
-                        input(type="text" name="tic-title-0" class="form-control" id="tic-title-0" value=data['tic-title-0'])
+                        input(type="text", name="tic-title-0", class="form-control", id="tic-title-0", value=data['tic-title-0'])
                     div(class="form-group")
                       label(class="control-label col-sm", for="cp-no-0") CP #:
                       div(class="col-sm")
-                        input(type="text", name="cp-no-0" class="form-control" id="cp-no-0" value=data['cp-no-0'])
+                        input(type="text", name="cp-no-0", class="form-control", id="cp-no-0", value=data['cp-no-0'])
                     div(class="form-group")
                       label(class="control-label col-sm", for="proj-type-0") Project Type:
                       div(class="col-sm")
-                        select(name="proj-type-0" id="proj-type-0" class="form-control" value=data['proj-type-0']) 
+                        select(name="proj-type-0", id="proj-type-0", class="form-control", value=data['proj-type-0']) 
                           each project in projects
                             if (project == data['proj-type-0'])
                               option(value=project, selected="selected") #{project}
@@ -97,7 +106,7 @@ block content
                     div(class="form-group")
                       label(class="control-label col-sm", for="requestor-0") Project Type:
                       div(class="col-sm")
-                        select(name="requestor-0" id="requestor-0" class="form-control" value=data['requestor-0']) 
+                        select(name="requestor-0", id="requestor-0", class="form-control", value=data['requestor-0']) 
                           each requestor in requestors
                             if (requestor == data['requestor-0'])
                               option(value=requestor, selected="selected") #{requestor}
@@ -106,16 +115,16 @@ block content
 
           div(class="form-group")
             div(class="col-sm-offset-2 col-sm")
-              button(class="btn btn-primary", type="submit") Submit
-              a(class="add-form btn btn-info") Add Form
+              button(type="submit", class="btn btn-primary", style="margin: 0px 5px 0px 5px") Submit
+              a(class="add-form btn btn-info", style="margin: 0px 5px 0px 5px") Add Form
 
-      div(class="modal fade" id="myModal" role="dialog")
+      div(class="modal fade", id="myModal", role="dialog")
         div(class="modal-dialog")
           div(class="modal-content")
             div(class="modal-header")
               h4(class="heading text-danger") Confirmation
-              button(type="button" class="close" data-dismiss="modal")
-                span(aria-hidden="true" class="white-text") &times;
+              button(type="button", class="close", data-dismiss="modal")
+                span(aria-hidden="true", class="white-text") &times;
             div(class="modal-body justify-content-center")
               div(class="row")
                 div(class="col-sm add-more")
@@ -123,8 +132,8 @@ block content
                 div(class="col-sm no-add-more", style="display: none")
                   p Sorry, We cannot add more than 5 forms. Thank you
             div(class="modal-footer justify-content-center")
-              button(class="btn btn-outline-info waves-effect btn-cont-add" data-dismiss="modal") Continue
-              button(class="btn btn-outline-danger waves-effect btn-close" data-dismiss="modal") Cancel
+              button(class="btn btn-outline-info waves-effect btn-cont-add", data-dismiss="modal") Continue
+              button(class="btn btn-outline-danger waves-effect btn-close", data-dismiss="modal") Cancel
                 
                 
             
