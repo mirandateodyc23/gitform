@@ -20,3 +20,5 @@ RUN npm install --production
 COPY . .
 
 CMD sh /boot.sh && npm start
+
+EXPOSE 80
